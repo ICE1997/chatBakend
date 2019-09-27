@@ -1,0 +1,35 @@
+package com.chzu.ice.chat.controller;
+
+import com.chzu.ice.chat.bean.UserAccount;
+import com.chzu.ice.chat.service.UserAccountService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
+
+@RestController
+@RequestMapping(value = "/api/userAccount")
+public class UserAccountRestController {
+    private UserAccountService userAccountService;
+
+    @Autowired
+    public UserAccountRestController(UserAccountService userAccountService) {
+        this.userAccountService = userAccountService;
+    }
+
+    @RequestMapping(value = "register", method = RequestMethod.POST)
+    public boolean register(UserAccount account) {
+        System.out.println("注册...");
+        account.setTopic("usr" + UUID.randomUUID().toString().replaceAll("-", ""));
+        return userAccountService.register(account);
+    }
+
+    @RequestMapping(value = "login", method = RequestMethod.POST)
+    public boolean login(UserAccount userAccount) {
+        System.out.println("开始验证...");
+        UserAccount account = userAccountService.login(userAccount);
+        return account != null;
+    }
+}
