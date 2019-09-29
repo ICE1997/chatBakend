@@ -10,9 +10,9 @@ public interface UserAccountDao {
     @Insert("insert into user_account (username,password,topic) values (#{username},#{password},#{topic})")
     void register(UserAccount userAccount);
 
-    @Select("select * from user_account where username = #{username} and password = #{password}")
+    @Select("select topic from user_account where username = #{username} and password = #{password} limit 1")
     UserAccount login(UserAccount userAccount);
 
-    @Select("select * from user_account where username = #{username}")
+    @Select("select username from user_account where username = #{username}")
     UserAccount findUserByUserName(String username);
 }
