@@ -1,4 +1,4 @@
-package com.chzu.ice.chat.bean;
+package com.chzu.ice.chat.pojo.bean;
 
 public class FriendRelation {
     private int id;

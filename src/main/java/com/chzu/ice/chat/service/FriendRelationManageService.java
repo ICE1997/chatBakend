@@ -1,12 +1,12 @@
 package com.chzu.ice.chat.service;
 
-import com.chzu.ice.chat.bean.FriendRelation;
-import com.chzu.ice.chat.pojo.FriendRelationRep;
+import com.chzu.ice.chat.pojo.bean.FriendRelation;
+import com.chzu.ice.chat.pojo.gson.FriendRelationResp;
 
 import java.util.List;
 
 public interface FriendRelationManageService {
     void addFriendRelation(FriendRelation friendRelation);
     FriendRelation findFriendRelationByName(String username, String friendName);
-    List<FriendRelationRep> getAllFriendRelationsByUserName(String username);
+    List<FriendRelationResp> getAllFriendRelationsByUserName(String username);
 }

@@ -1,15 +1,13 @@
 package com.chzu.ice.chat.controller;
 
-import com.chzu.ice.chat.bean.UserAccount;
-import com.chzu.ice.chat.pojo.ResponseJ;
+import com.chzu.ice.chat.pojo.bean.UserAccount;
+import com.chzu.ice.chat.pojo.gson.ResponseJ;
 import com.chzu.ice.chat.service.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/userAccount")
@@ -24,7 +22,6 @@ public class UserAccountRestController {
     @RequestMapping(value = "register", method = RequestMethod.POST)
     public ResponseJ register(@RequestBody UserAccount account) {
         System.out.println("注册...");
-        account.setTopic("usr" + UUID.randomUUID().toString().replaceAll("-", ""));
         return userAccountService.register(account);
     }
 

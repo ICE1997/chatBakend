@@ -1,4 +1,4 @@
-package com.chzu.ice.chat.pojo;
+package com.chzu.ice.chat.pojo.gson;
 
 public class ResponseJ<T> {
     private String code;
@@ -10,7 +10,6 @@ public class ResponseJ<T> {
         this.msg = msg;
         this.data = null;
     }
-
 
 
     public String getCode() {

@@ -1,9 +1,9 @@
 package com.chzu.ice.chat.service;
 
-import com.chzu.ice.chat.bean.UserAccount;
+import com.chzu.ice.chat.pojo.bean.UserAccount;
 import com.chzu.ice.chat.dao.UserAccountDao;
-import com.chzu.ice.chat.pojo.LoginResponse;
-import com.chzu.ice.chat.pojo.ResponseJ;
+import com.chzu.ice.chat.pojo.gson.LoginResp;
+import com.chzu.ice.chat.pojo.gson.ResponseJ;
 import com.chzu.ice.chat.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,9 +33,9 @@ public class UserAccountServiceImpl implements UserAccountService {
         if (t != null) {
             UserAccount account = userAccountDao.login(userAccount);
             if (account != null) {
-                LoginResponse loginResponse = new LoginResponse();
-                loginResponse.topic = account.getTopic();
-                return ResultUtil.loginSuccess(loginResponse);
+                LoginResp loginResp = new LoginResp();
+                loginResp.topic = account.getTopic();
+                return ResultUtil.loginSuccess(loginResp);
             } else {
                 return ResultUtil.loginFailedForWrongPassword(null);
             }

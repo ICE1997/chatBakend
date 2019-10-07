@@ -1,4 +1,4 @@
-package com.chzu.ice.chat.bean;
+package com.chzu.ice.chat.pojo.bean;
 
 public class UserAccount {
     private int id;

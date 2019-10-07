@@ -1,8 +1,8 @@
 package com.chzu.ice.chat.service;
 
-import com.chzu.ice.chat.bean.FriendRelation;
+import com.chzu.ice.chat.pojo.bean.FriendRelation;
 import com.chzu.ice.chat.dao.FriendRelationManageDao;
-import com.chzu.ice.chat.pojo.FriendRelationRep;
+import com.chzu.ice.chat.pojo.gson.FriendRelationResp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class FriendRelationManageServiceImpl implements FriendRelationManageServ
     }
 
     @Override
-    public List<FriendRelationRep> getAllFriendRelationsByUserName(String username) {
+    public List<FriendRelationResp> getAllFriendRelationsByUserName(String username) {
         System.out.println(username);
         return friendRelationManageDao.getAllFriendRelationsByUserName(username);
     }

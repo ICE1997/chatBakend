@@ -1,7 +1,7 @@
 package com.chzu.ice.chat.util;
 
-import com.chzu.ice.chat.pojo.FriendRelationRep;
-import com.chzu.ice.chat.pojo.ResponseJ;
+import com.chzu.ice.chat.pojo.gson.FriendRelationResp;
+import com.chzu.ice.chat.pojo.gson.ResponseJ;
 
 import java.util.List;
 
@@ -55,8 +55,8 @@ public class ResultUtil {
         return responseJ;
     }
 
-    public static ResponseJ<List<FriendRelationRep>> loadFriendsSucceed(List<FriendRelationRep> friends) {
-        ResponseJ<List<FriendRelationRep>> responseJ = new ResponseJ<>("10401", "获取朋友成功!");
+    public static ResponseJ<List<FriendRelationResp>> loadFriendsSucceed(List<FriendRelationResp> friends) {
+        ResponseJ<List<FriendRelationResp>> responseJ = new ResponseJ<>("10401", "获取朋友成功!");
         responseJ.setData(friends);
         return responseJ;
     }
