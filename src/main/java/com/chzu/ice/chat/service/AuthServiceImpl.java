@@ -2,8 +2,10 @@ package com.chzu.ice.chat.service;
 
 import com.chzu.ice.chat.pojo.bean.UserAccount;
 import com.chzu.ice.chat.dao.UserAccountDao;
-import com.chzu.ice.chat.pojo.gson.LoginResp;
-import com.chzu.ice.chat.pojo.gson.BaseResponse;
+import com.chzu.ice.chat.pojo.gson.req.LoginReq;
+import com.chzu.ice.chat.pojo.gson.resp.data.LoginData;
+import com.chzu.ice.chat.pojo.gson.resp.BaseResponse;
+import com.chzu.ice.chat.pojo.gson.req.RegisterReq;
 import com.chzu.ice.chat.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,12 +16,12 @@ public class AuthServiceImpl implements AuthService {
     private UserAccountDao userAccountDao;
 
     @Override
-    public BaseResponse register(UserAccount userAccount) {
+    public BaseResponse register(RegisterReq registerReq) {
         try {
-            if (findUserByUserName(userAccount.getUsername()) != null) {
+            if (findUserByUserName(registerReq.getUsername()) != null) {
                 return ResultUtil.registerFailedForUserExist(null);
             } else {
-                userAccountDao.register(userAccount);
+                userAccountDao.register(registerReq.getUsername(), registerReq.getPassword());
                 return ResultUtil.registerSucceed(null);
             }
         } catch (Exception e) {
@@ -28,14 +30,12 @@ public class AuthServiceImpl implements AuthService {
         return ResultUtil.registerFailedForSystemError(null);
     }
 
-    public BaseResponse login(UserAccount userAccount) {
-        UserAccount t = findUserByUserName(userAccount.getUsername());
-        if (t != null) {
-            UserAccount account = userAccountDao.login(userAccount);
+    public BaseResponse login(LoginReq loginReq) {
+        if (findUserByUserName(loginReq.getUsername()) != null) {
+            UserAccount account = userAccountDao.login(loginReq.getUsername(), loginReq.getPassword());
             if (account != null) {
-                LoginResp loginResp = new LoginResp();
-                loginResp.topic = account.getTopic();
-                return ResultUtil.loginSuccess(loginResp);
+                LoginData loginData = new LoginData();
+                return ResultUtil.loginSucceed(loginData);
             } else {
                 return ResultUtil.loginFailedForWrongPassword(null);
             }

@@ -1,7 +1,6 @@
 package com.chzu.ice.chat.pojo.bean;
 
 public class FriendRelation {
-    private int id;
     private String userName;
     private String friendName;
     private String friendTopic;

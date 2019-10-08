@@ -1,11 +1,8 @@
-package com.chzu.ice.chat.pojo.bean;
+package com.chzu.ice.chat.pojo.gson.req;
 
-public class UserAccount {
+public class LoginReq {
     private String username;
     private String password;
-
-    public UserAccount() {
-    }
 
     public String getUsername() {
         return username;

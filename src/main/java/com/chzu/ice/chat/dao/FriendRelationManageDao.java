@@ -1,7 +1,7 @@
 package com.chzu.ice.chat.dao;
 
 import com.chzu.ice.chat.pojo.bean.FriendRelation;
-import com.chzu.ice.chat.pojo.gson.FriendRelationResp;
+import com.chzu.ice.chat.pojo.gson.resp.data.LoadAllFriendRelationsData;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -14,7 +14,7 @@ public interface FriendRelationManageDao {
     void addFriendRelation(FriendRelation friendRelation);
 
     @Select("select * from friend_relation where user_name = #{username} ")
-    List<FriendRelationResp> getAllFriendRelationsByUserName(String username);
+    List<LoadAllFriendRelationsData> getAllFriendRelationsByUserName(String username);
 
     @Select("select * from friend_relation where user_name = #{username} and friend_name = #{friendName}")
     FriendRelation findFriendRelationByName(String username, String friendName);

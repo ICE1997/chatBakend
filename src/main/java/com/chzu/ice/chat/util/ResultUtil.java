@@ -1,7 +1,7 @@
 package com.chzu.ice.chat.util;
 
-import com.chzu.ice.chat.pojo.gson.FriendRelationResp;
-import com.chzu.ice.chat.pojo.gson.BaseResponse;
+import com.chzu.ice.chat.pojo.gson.resp.data.LoadAllFriendRelationsData;
+import com.chzu.ice.chat.pojo.gson.resp.BaseResponse;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class ResultUtil {
         return baseResponse;
     }
 
-    public static BaseResponse loginSuccess(Object obj) {
+    public static BaseResponse loginSucceed(Object obj) {
         BaseResponse<Object> baseResponse = new BaseResponse<>("10201", "登录成功!");
         baseResponse.setData(obj);
         return baseResponse;
@@ -55,8 +55,8 @@ public class ResultUtil {
         return baseResponse;
     }
 
-    public static BaseResponse<List<FriendRelationResp>> loadFriendsSucceed(List<FriendRelationResp> friends) {
-        BaseResponse<List<FriendRelationResp>> baseResponse = new BaseResponse<>("10401", "获取朋友成功!");
+    public static BaseResponse<List<LoadAllFriendRelationsData>> loadFriendsSucceed(List<LoadAllFriendRelationsData> friends) {
+        BaseResponse<List<LoadAllFriendRelationsData>> baseResponse = new BaseResponse<>("10401", "获取朋友成功!");
         baseResponse.setData(friends);
         return baseResponse;
     }
