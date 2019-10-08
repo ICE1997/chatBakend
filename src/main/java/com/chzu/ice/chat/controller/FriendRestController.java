@@ -6,7 +6,7 @@ import com.chzu.ice.chat.pojo.gson.FriendRelationResp;
 import com.chzu.ice.chat.pojo.gson.FriendRelationReq;
 import com.chzu.ice.chat.pojo.gson.BaseResponse;
 import com.chzu.ice.chat.service.FriendRelationManageService;
-import com.chzu.ice.chat.service.UserAccountService;
+import com.chzu.ice.chat.service.AuthService;
 import com.chzu.ice.chat.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,12 +19,12 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/friend")
 public class FriendRestController {
-    private UserAccountService userAccountService;
+    private AuthService authService;
     private FriendRelationManageService friendRelationManageService;
 
     @Autowired
-    public FriendRestController(UserAccountService userAccountService, FriendRelationManageService friendRelationManageService) {
-        this.userAccountService = userAccountService;
+    public FriendRestController(AuthService authService, FriendRelationManageService friendRelationManageService) {
+        this.authService = authService;
         this.friendRelationManageService = friendRelationManageService;
     }
 
@@ -38,7 +38,7 @@ public class FriendRestController {
     @RequestMapping(value = "/addFriend", method = RequestMethod.POST)
     public boolean addFriend(FriendRelation friendRelation) {
         boolean flag = false;
-        UserAccount t1 = userAccountService.findUserByUserName(friendRelation.getFriendName());
+        UserAccount t1 = authService.findUserByUserName(friendRelation.getFriendName());
         FriendRelation fr = friendRelationManageService.findFriendRelationByName(friendRelation.getUserName(), friendRelation.getFriendName());
 
         if (fr == null && !friendRelation.getFriendName().equals(friendRelation.getUserName()) && t1 != null) {
