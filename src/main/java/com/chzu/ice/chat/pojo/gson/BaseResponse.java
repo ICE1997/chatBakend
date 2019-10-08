@@ -1,11 +1,11 @@
 package com.chzu.ice.chat.pojo.gson;
 
-public class ResponseJ<T> {
+public class BaseResponse<T> {
     private String code;
     private String msg;
     private T data;
 
-    public ResponseJ(String code, String msg) {
+    public BaseResponse(String code, String msg) {
         this.code = code;
         this.msg = msg;
         this.data = null;

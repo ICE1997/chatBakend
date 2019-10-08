@@ -4,7 +4,7 @@ import com.chzu.ice.chat.pojo.bean.FriendRelation;
 import com.chzu.ice.chat.pojo.bean.UserAccount;
 import com.chzu.ice.chat.pojo.gson.FriendRelationResp;
 import com.chzu.ice.chat.pojo.gson.FriendRelationReq;
-import com.chzu.ice.chat.pojo.gson.ResponseJ;
+import com.chzu.ice.chat.pojo.gson.BaseResponse;
 import com.chzu.ice.chat.service.FriendRelationManageService;
 import com.chzu.ice.chat.service.UserAccountService;
 import com.chzu.ice.chat.util.ResultUtil;
@@ -29,7 +29,7 @@ public class FriendRestController {
     }
 
     @RequestMapping(value = "/loadFriends", method = RequestMethod.POST)
-    public ResponseJ<List<FriendRelationResp>> loadFriends(@RequestBody FriendRelationReq relationReq) {
+    public BaseResponse<List<FriendRelationResp>> loadFriends(@RequestBody FriendRelationReq relationReq) {
         System.out.println(relationReq.userName);
         List<FriendRelationResp> relationResponses = friendRelationManageService.getAllFriendRelationsByUserName(relationReq.userName);
         return ResultUtil.loadFriendsSucceed(relationResponses);

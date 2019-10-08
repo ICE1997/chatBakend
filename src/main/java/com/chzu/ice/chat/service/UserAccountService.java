@@ -1,10 +1,10 @@
 package com.chzu.ice.chat.service;
 
 import com.chzu.ice.chat.pojo.bean.UserAccount;
-import com.chzu.ice.chat.pojo.gson.ResponseJ;
+import com.chzu.ice.chat.pojo.gson.BaseResponse;
 
 public interface UserAccountService {
-    ResponseJ register(UserAccount userAccount);
-    ResponseJ login(UserAccount userAccount);
+    BaseResponse register(UserAccount userAccount);
+    BaseResponse login(UserAccount userAccount);
     UserAccount findUserByUserName(String username);
 }

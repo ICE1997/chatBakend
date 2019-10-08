@@ -3,7 +3,7 @@ package com.chzu.ice.chat.service;
 import com.chzu.ice.chat.pojo.bean.UserAccount;
 import com.chzu.ice.chat.dao.UserAccountDao;
 import com.chzu.ice.chat.pojo.gson.LoginResp;
-import com.chzu.ice.chat.pojo.gson.ResponseJ;
+import com.chzu.ice.chat.pojo.gson.BaseResponse;
 import com.chzu.ice.chat.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     private UserAccountDao userAccountDao;
 
     @Override
-    public ResponseJ register(UserAccount userAccount) {
+    public BaseResponse register(UserAccount userAccount) {
         try {
             if (findUserByUserName(userAccount.getUsername()) != null) {
                 return ResultUtil.registerFailedForUserExist(null);
@@ -28,7 +28,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         return ResultUtil.registerFailedForSystemError(null);
     }
 
-    public ResponseJ login(UserAccount userAccount) {
+    public BaseResponse login(UserAccount userAccount) {
         UserAccount t = findUserByUserName(userAccount.getUsername());
         if (t != null) {
             UserAccount account = userAccountDao.login(userAccount);
