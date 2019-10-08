@@ -1,7 +1,8 @@
 package com.chzu.ice.chat.controller;
 
-import com.chzu.ice.chat.pojo.bean.UserAccount;
-import com.chzu.ice.chat.pojo.gson.BaseResponse;
+import com.chzu.ice.chat.pojo.gson.resp.BaseResponse;
+import com.chzu.ice.chat.pojo.gson.req.LoginReq;
+import com.chzu.ice.chat.pojo.gson.req.RegisterReq;
 import com.chzu.ice.chat.service.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,15 +21,15 @@ public class UserAccountRestController {
     }
 
     @RequestMapping(value = "register", method = RequestMethod.POST)
-    public BaseResponse register(@RequestBody UserAccount account) {
+    public BaseResponse register(@RequestBody RegisterReq registerReq) {
         System.out.println("注册...");
-        return userAccountService.register(account);
+        return userAccountService.register(registerReq);
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public BaseResponse login(@RequestBody UserAccount userAccount) {
+    public BaseResponse login(@RequestBody LoginReq loginReq) {
         System.out.println("开始验证...");
-        return userAccountService.login(userAccount);
+        return userAccountService.login(loginReq);
     }
 
 }

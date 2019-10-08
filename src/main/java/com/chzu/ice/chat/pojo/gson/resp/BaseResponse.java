@@ -1,4 +1,4 @@
-package com.chzu.ice.chat.pojo.gson;
+package com.chzu.ice.chat.pojo.gson.resp;
 
 public class BaseResponse<T> {
     private String code;
