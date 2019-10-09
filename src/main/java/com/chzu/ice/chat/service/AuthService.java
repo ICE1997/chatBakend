@@ -10,5 +10,5 @@ public interface AuthService {
 
     BaseResponse login(LoginReq loginReq);
 
-    UserAccount findUserByUserName(String username);
+    UserAccount loadUserByUserName(String username);
 }

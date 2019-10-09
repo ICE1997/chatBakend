@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api/userAccount")
-public class UserAccountRestController {
+public class AuthRestController {
     private AuthService authService;
 
     @Autowired
-    public UserAccountRestController(AuthService authService) {
+    public AuthRestController(AuthService authService) {
         this.authService = authService;
     }
 
