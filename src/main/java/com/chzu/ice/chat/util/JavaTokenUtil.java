@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Component
 public class JavaTokenUtil implements Serializable {
-    private static final String CLAIM_KEY_USERNAME = "testUser";
+    private static final String CLAIM_KEY_USERNAME = "sub";
     private static final long EXPIRATION_TIME = 432000000;
     private static final String SECRET = "haha";
 

@@ -1,4 +1,4 @@
-package com.chzu.ice.chat.service;
+package com.chzu.ice.chat.service.impl;
 
 import com.chzu.ice.chat.dao.UserAccountDao;
 import com.chzu.ice.chat.pojo.bean.User;
