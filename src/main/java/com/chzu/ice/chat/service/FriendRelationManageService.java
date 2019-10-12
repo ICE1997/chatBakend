@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface FriendRelationManageService {
     void addFriendRelation(FriendRelation friendRelation);
+
     FriendRelation findFriendRelationByName(String username, String friendName);
+
     List<LoadAllFriendRelationsData> getAllFriendRelationsByUserName(String username);
 }

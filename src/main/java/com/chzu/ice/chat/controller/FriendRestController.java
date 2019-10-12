@@ -1,13 +1,13 @@
 package com.chzu.ice.chat.controller;
 
 import com.chzu.ice.chat.pojo.bean.FriendRelation;
-import com.chzu.ice.chat.pojo.bean.User;
+import com.chzu.ice.chat.pojo.bean.Principal;
 import com.chzu.ice.chat.pojo.bean.UserAccount;
-import com.chzu.ice.chat.pojo.gson.resp.data.LoadAllFriendRelationsData;
 import com.chzu.ice.chat.pojo.gson.req.AddFriendReq;
 import com.chzu.ice.chat.pojo.gson.resp.BaseResponse;
-import com.chzu.ice.chat.service.FriendRelationManageService;
+import com.chzu.ice.chat.pojo.gson.resp.data.LoadAllFriendRelationsData;
 import com.chzu.ice.chat.service.AuthService;
+import com.chzu.ice.chat.service.FriendRelationManageService;
 import com.chzu.ice.chat.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
 
 
 @RestController
@@ -35,10 +34,10 @@ public class FriendRestController {
 
     @RequestMapping(value = "/loadFriends", method = RequestMethod.POST)
     public BaseResponse<List<LoadAllFriendRelationsData>> loadFriends(@RequestBody AddFriendReq addFriendReq) {
-       SecurityContext  securityContext = SecurityContextHolder.getContext();
-       User user = (User)securityContext.getAuthentication().getPrincipal();
-        System.out.println(user.getUsername());
-        List<LoadAllFriendRelationsData> relationResponses = friendRelationManageService.getAllFriendRelationsByUserName(user.getUsername());
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Principal principal = (Principal) securityContext.getAuthentication().getPrincipal();
+        System.out.println(principal.getUsername());
+        List<LoadAllFriendRelationsData> relationResponses = friendRelationManageService.getAllFriendRelationsByUserName(principal.getUsername());
         return ResultUtil.loadFriendsSucceed(relationResponses);
     }
 

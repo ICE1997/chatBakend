@@ -1,10 +1,12 @@
 package com.chzu.ice.chat.util;
 
 
-import com.chzu.ice.chat.pojo.bean.User;
+import com.chzu.ice.chat.config.JWTConfig;
+import com.chzu.ice.chat.pojo.bean.Principal;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -20,19 +22,30 @@ public class JavaTokenUtil implements Serializable {
     private static final long EXPIRATION_TIME = 432000000;
     private static final String SECRET = "haha";
 
-    public String generateToken(UserDetails userDetails) {
+    @Autowired
+    private JWTConfig jwtConfig;
+
+    public String generateToken(UserDetails userDetails, long exp) {
         Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
         return Jwts.builder().setClaims(claims)
-                .setExpiration(new Date(Instant.now().toEpochMilli() + EXPIRATION_TIME))
+                .setExpiration(new Date(Instant.now().toEpochMilli() + exp))
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
     }
 
+    public String generateAccessToken(UserDetails userDetails) {
+        return generateToken(userDetails, jwtConfig.getAccessTokenExpirationTime());
+    }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        return generateToken(userDetails, jwtConfig.getRefreshTokenExpirationTime());
+    }
+
     public Boolean validate(String token, UserDetails userDetails) {
-        User user = (User) userDetails;
+        Principal principal = (Principal) userDetails;
         String username = getUsernameFromToken(token);
-        return (username.equals(user.getUsername()) && !isTokenExpired(token));
+        return (username.equals(principal.getUsername()) && !isTokenExpired(token));
     }
 
     public Boolean isTokenExpired(String token) {

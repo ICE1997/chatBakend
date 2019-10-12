@@ -1,6 +1,6 @@
 package com.chzu.ice.chat.dao;
 
-import com.chzu.ice.chat.pojo.bean.User;
+import com.chzu.ice.chat.pojo.bean.Principal;
 import com.chzu.ice.chat.pojo.bean.UserAccount;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -19,5 +19,5 @@ public interface UserAccountDao {
     UserAccount loadUserByUserName(String username);
 
     @Select("select username , password from user_account where username = #{username}")
-    User getUserByUserName(String username);
+    Principal getUserByUserName(String username);
 }

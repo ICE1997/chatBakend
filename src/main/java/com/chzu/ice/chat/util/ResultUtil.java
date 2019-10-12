@@ -1,7 +1,7 @@
 package com.chzu.ice.chat.util;
 
-import com.chzu.ice.chat.pojo.gson.resp.data.LoadAllFriendRelationsData;
 import com.chzu.ice.chat.pojo.gson.resp.BaseResponse;
+import com.chzu.ice.chat.pojo.gson.resp.data.LoadAllFriendRelationsData;
 
 import java.util.List;
 

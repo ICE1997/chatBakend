@@ -5,10 +5,7 @@ import com.chzu.ice.chat.pojo.gson.req.RegisterReq;
 import com.chzu.ice.chat.pojo.gson.resp.BaseResponse;
 import com.chzu.ice.chat.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -34,4 +31,8 @@ public class AuthRestController {
         return authService.login(loginReq);
     }
 
+    @PostMapping(value = "getAccessToken")
+    public BaseResponse getAccessToken(@RequestParam String refreshToken) {
+        return null;
+    }
 }

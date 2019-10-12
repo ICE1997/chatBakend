@@ -53,14 +53,18 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication = authenticationManager.authenticate(upToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginReq.getUsername());
-        System.out.println(userDetails.getUsername());
-        String token = tokenUtil.generateToken(userDetails);
-        System.out.println(token);
-
+        String accessToken = tokenUtil.generateAccessToken(userDetails);
+        String refreshToken = tokenUtil.generateRefreshToken(userDetails);
         LoginData loginData = new LoginData();
-        loginData.token = token;
+        loginData.refresh_token = refreshToken;
+        loginData.access_token = accessToken;
         return ResultUtil.loginSucceed(loginData);
+    }
 
+    @Override
+    public BaseResponse getAccessToken(String refreshToken) {
+
+        return null;
     }
 
     @Override

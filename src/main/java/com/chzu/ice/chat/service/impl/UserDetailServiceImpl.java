@@ -1,7 +1,6 @@
 package com.chzu.ice.chat.service.impl;
 
 import com.chzu.ice.chat.dao.UserAccountDao;
-import com.chzu.ice.chat.pojo.bean.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
