@@ -1,7 +1,7 @@
 package com.chzu.ice.chat.util;
 
 
-import com.chzu.ice.chat.config.JWTConfig;
+import com.chzu.ice.chat.config.JwtConfig;
 import com.chzu.ice.chat.pojo.bean.Principal;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -13,24 +13,22 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
+/**
+ * @author mason
+ */
 @Component
 public class JavaTokenUtil implements Serializable {
-    private static final String CLAIM_KEY_USERNAME = "sub";
-    private static final long EXPIRATION_TIME = 432000000;
-    private static final String SECRET = "haha";
-
     @Autowired
-    private JWTConfig jwtConfig;
+    private JwtConfig jwtConfig;
 
-    public String generateToken(UserDetails userDetails, long exp) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
-        return Jwts.builder().setClaims(claims)
+    private String generateToken(UserDetails userDetails, long exp) {
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
+                .setIssuer(jwtConfig.getIssuer())
+                .setIssuedAt(new Date(Instant.now().toEpochMilli()))
                 .setExpiration(new Date(Instant.now().toEpochMilli() + exp))
-                .signWith(SignatureAlgorithm.HS512, SECRET)
+                .signWith(SignatureAlgorithm.HS512, jwtConfig.getSecret())
                 .compact();
     }
 
@@ -48,7 +46,7 @@ public class JavaTokenUtil implements Serializable {
         return (username.equals(principal.getUsername()) && !isTokenExpired(token));
     }
 
-    public Boolean isTokenExpired(String token) {
+    private Boolean isTokenExpired(String token) {
         return getExpirationDateFromToken(token).before(new Date());
     }
 
@@ -57,14 +55,14 @@ public class JavaTokenUtil implements Serializable {
         return getClaimsFromToken(token).getSubject();
     }
 
-    public Date getExpirationDateFromToken(String token) {
+    private Date getExpirationDateFromToken(String token) {
         return getClaimsFromToken(token).getExpiration();
     }
 
-    public Claims getClaimsFromToken(String token) {
-        System.out.println(Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody());
+    private Claims getClaimsFromToken(String token) {
+        System.out.println(Jwts.parser().setSigningKey(jwtConfig.getSecret()).parseClaimsJws(token).getBody());
         return Jwts.parser()
-                .setSigningKey(SECRET)
+                .setSigningKey(jwtConfig.getSecret())
                 .parseClaimsJws(token)
                 .getBody();
     }

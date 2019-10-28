@@ -1,5 +1,8 @@
 package com.chzu.ice.chat.pojo.bean;
 
+/**
+ * @author mason
+ */
 public class UserAccount {
     private String username;
     private String password;

@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * @author mason
+ */
 public class Principal implements UserDetails, Serializable {
     private Long id;
     private String username;

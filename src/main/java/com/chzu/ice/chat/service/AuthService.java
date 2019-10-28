@@ -12,5 +12,5 @@ public interface AuthService {
 
     BaseResponse getAccessToken(String refreshToken);
 
-    UserAccount loadUserByUserName(String username);
+    UserAccount getUserByUserName(String username);
 }

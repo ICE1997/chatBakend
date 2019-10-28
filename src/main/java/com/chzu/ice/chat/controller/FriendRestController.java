@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
+/**
+ * @author mason
+ */
 @RestController
 @RequestMapping(value = "/api/friend")
 public class FriendRestController {
@@ -44,7 +47,7 @@ public class FriendRestController {
     @RequestMapping(value = "/addFriend", method = RequestMethod.POST)
     public boolean addFriend(FriendRelation friendRelation) {
         boolean flag = false;
-        UserAccount t1 = authService.loadUserByUserName(friendRelation.getFriendName());
+        UserAccount t1 = authService.getUserByUserName(friendRelation.getFriendName());
         FriendRelation fr = friendRelationManageService.findFriendRelationByName(friendRelation.getUserName(), friendRelation.getFriendName());
 
         if (fr == null && !friendRelation.getFriendName().equals(friendRelation.getUserName()) && t1 != null) {

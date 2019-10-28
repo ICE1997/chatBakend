@@ -7,17 +7,18 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 
+/**
+ * @author mason
+ * 用户账户操作DAO
+ */
 @Mapper
 public interface UserAccountDao {
     @Insert("insert into user_account (username,password) values (#{username},#{password})")
     void register(String username, String password);
 
-    @Select("select * from user_account where username = #{username} and password = #{password} limit 1")
-    UserAccount login(String username, String password);
-
     @Select("select username from user_account where username = #{username}")
-    UserAccount loadUserByUserName(String username);
+    UserAccount getUserByUserName(String username);
 
     @Select("select username , password from user_account where username = #{username}")
-    Principal getUserByUserName(String username);
+    Principal loadUserByUserName(String username);
 }

@@ -1,5 +1,8 @@
 package com.chzu.ice.chat.pojo.bean;
 
+/**
+ * @author mason
+ */
 public class FriendRelation {
     private String userName;
     private String friendName;

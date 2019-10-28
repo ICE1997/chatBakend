@@ -8,6 +8,9 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
+/**
+ * @author mason
+ */
 @Mapper
 public interface FriendRelationManageDao {
     @Insert("insert into friend_relation (user_name,friend_name,friend_topic) values(#{userName},#{friendName},#{friendTopic})")

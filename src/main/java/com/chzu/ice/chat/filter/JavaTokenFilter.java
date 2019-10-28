@@ -2,6 +2,7 @@ package com.chzu.ice.chat.filter;
 
 import com.chzu.ice.chat.util.JavaTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,10 +17,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @author mason
+ */
 @Component
 public class JavaTokenFilter extends OncePerRequestFilter {
-
     private static final String HEADER_AUTHORIZATION = "Authorization";
+    @Qualifier("userDetailServiceImpl")
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired

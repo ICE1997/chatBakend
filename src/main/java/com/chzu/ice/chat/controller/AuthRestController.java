@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
+/**
+ * @author mason
+ */
 @RestController
 @RequestMapping(value = "/api/userAccount")
 public class AuthRestController {

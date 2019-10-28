@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author mason
+ */
 @Service
 public class FriendRelationManageServiceImpl implements FriendRelationManageService {
     @Autowired

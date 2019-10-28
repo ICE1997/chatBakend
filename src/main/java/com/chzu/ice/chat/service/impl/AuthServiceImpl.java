@@ -10,6 +10,7 @@ import com.chzu.ice.chat.service.AuthService;
 import com.chzu.ice.chat.util.JavaTokenUtil;
 import com.chzu.ice.chat.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,6 +20,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author mason
+ * AuthService的实现，用于注册、登录
+ */
 @Service
 public class AuthServiceImpl implements AuthService {
     @Autowired
@@ -27,6 +32,7 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Qualifier("userDetailServiceImpl")
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -36,7 +42,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public BaseResponse register(RegisterReq registerReq) {
         try {
-            if (loadUserByUserName(registerReq.getUsername()) != null) {
+            if (getUserByUserName(registerReq.getUsername()) != null) {
                 return ResultUtil.registerFailedForUserExist(null);
             } else {
                 userAccountDao.register(registerReq.getUsername(), new BCryptPasswordEncoder().encode(registerReq.getPassword()));
@@ -48,6 +54,7 @@ public class AuthServiceImpl implements AuthService {
         return ResultUtil.registerFailedForSystemError(null);
     }
 
+    @Override
     public BaseResponse login(LoginReq loginReq) {
         UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(loginReq.getUsername(), loginReq.getPassword());
         Authentication authentication = authenticationManager.authenticate(upToken);
@@ -63,12 +70,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public BaseResponse getAccessToken(String refreshToken) {
-
         return null;
     }
 
     @Override
-    public UserAccount loadUserByUserName(String username) {
-        return userAccountDao.loadUserByUserName(username);
+    public UserAccount getUserByUserName(String username) {
+        return userAccountDao.getUserByUserName(username);
     }
 }
