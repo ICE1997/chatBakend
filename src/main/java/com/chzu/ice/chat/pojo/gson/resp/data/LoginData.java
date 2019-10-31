@@ -1,6 +1,9 @@
 package com.chzu.ice.chat.pojo.gson.resp.data;
 
+/**
+ * @author mason
+ */
 public class LoginData {
-    public String access_token;
-    public String refresh_token;
+    public String accessToken;
+    public String refreshToken;
 }

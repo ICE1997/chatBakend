@@ -13,43 +13,62 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author mason
  */
 @Component
-public class JavaTokenUtil implements Serializable {
+public class JwtUtil implements Serializable {
     @Autowired
     private JwtConfig jwtConfig;
 
-    private String generateToken(UserDetails userDetails, long exp) {
+    private String generateToken(UserDetails userDetails, String type, long exp) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(Claims.SUBJECT, userDetails.getUsername());
+        claims.put(Claims.ISSUER, jwtConfig.getIssuer());
+        claims.put(Claims.ISSUED_AT, new Date(Instant.now().toEpochMilli()));
+        claims.put(Claims.EXPIRATION, new Date(Instant.now().toEpochMilli() + exp));
+        claims.put("type", type);
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())
-                .setIssuer(jwtConfig.getIssuer())
-                .setIssuedAt(new Date(Instant.now().toEpochMilli()))
-                .setExpiration(new Date(Instant.now().toEpochMilli() + exp))
+                .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, jwtConfig.getSecret())
                 .compact();
     }
 
     public String generateAccessToken(UserDetails userDetails) {
-        return generateToken(userDetails, jwtConfig.getAccessTokenExpirationTime());
+        return generateToken(userDetails, jwtConfig.getTypeAccessToken(), jwtConfig.getAccessTokenExpirationTime());
     }
 
     public String generateRefreshToken(UserDetails userDetails) {
-        return generateToken(userDetails, jwtConfig.getRefreshTokenExpirationTime());
+        return generateToken(userDetails, jwtConfig.getTypeRefreshToken(), jwtConfig.getRefreshTokenExpirationTime());
     }
 
-    public Boolean validate(String token, UserDetails userDetails) {
-        Principal principal = (Principal) userDetails;
-        String username = getUsernameFromToken(token);
-        return (username.equals(principal.getUsername()) && !isTokenExpired(token));
+    private Boolean validate(String token, UserDetails userDetails, String type) {
+        if (type.equals(getTypeFromToken(token))) {
+            Principal principal = (Principal) userDetails;
+            String username = getUsernameFromToken(token);
+            return (username.equals(principal.getUsername()) && !isTokenExpired(token));
+        }
+        return false;
+    }
+
+    public Boolean validateAccessToken(String token, UserDetails userDetails) {
+        return validate(token,userDetails,jwtConfig.getTypeAccessToken());
+    }
+
+    public Boolean validateRefreshToken(String token,UserDetails userDetails) {
+        return validate(token,userDetails,jwtConfig.getTypeRefreshToken());
     }
 
     private Boolean isTokenExpired(String token) {
         return getExpirationDateFromToken(token).before(new Date());
     }
 
+    public String getTypeFromToken(String token) {
+        return (String) getClaimsFromToken(token).get("type");
+    }
 
     public String getUsernameFromToken(String token) {
         return getClaimsFromToken(token).getSubject();
@@ -60,7 +79,6 @@ public class JavaTokenUtil implements Serializable {
     }
 
     private Claims getClaimsFromToken(String token) {
-        System.out.println(Jwts.parser().setSigningKey(jwtConfig.getSecret()).parseClaimsJws(token).getBody());
         return Jwts.parser()
                 .setSigningKey(jwtConfig.getSecret())
                 .parseClaimsJws(token)

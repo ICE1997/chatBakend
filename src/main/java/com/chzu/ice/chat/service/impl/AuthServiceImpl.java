@@ -7,13 +7,14 @@ import com.chzu.ice.chat.pojo.gson.req.RegisterReq;
 import com.chzu.ice.chat.pojo.gson.resp.BaseResponse;
 import com.chzu.ice.chat.pojo.gson.resp.data.LoginData;
 import com.chzu.ice.chat.service.AuthService;
-import com.chzu.ice.chat.util.JavaTokenUtil;
+import com.chzu.ice.chat.util.JwtUtil;
 import com.chzu.ice.chat.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -37,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
     private UserDetailsService userDetailsService;
 
     @Autowired
-    private JavaTokenUtil tokenUtil;
+    private JwtUtil tokenUtil;
 
     @Override
     public BaseResponse register(RegisterReq registerReq) {
@@ -56,21 +57,30 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public BaseResponse login(LoginReq loginReq) {
-        UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(loginReq.getUsername(), loginReq.getPassword());
-        Authentication authentication = authenticationManager.authenticate(upToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(loginReq.getUsername());
-        String accessToken = tokenUtil.generateAccessToken(userDetails);
-        String refreshToken = tokenUtil.generateRefreshToken(userDetails);
-        LoginData loginData = new LoginData();
-        loginData.refresh_token = refreshToken;
-        loginData.access_token = accessToken;
-        return ResultUtil.loginSucceed(loginData);
+        if (getUserByUserName(loginReq.getUsername()) != null) {
+            UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(loginReq.getUsername(), loginReq.getPassword());
+            Authentication authentication = authenticationManager.authenticate(upToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(loginReq.getUsername());
+            String accessToken = tokenUtil.generateAccessToken(userDetails);
+            String refreshToken = tokenUtil.generateRefreshToken(userDetails);
+            LoginData loginData = new LoginData();
+            loginData.refreshToken = refreshToken;
+            loginData.accessToken = accessToken;
+            return ResultUtil.loginSucceed(loginData);
+        } else {
+            return ResultUtil.loginFailedForUserNotExist(null);
+        }
+
     }
 
     @Override
-    public BaseResponse getAccessToken(String refreshToken) {
-        return null;
+    public BaseResponse getAccessToken() {
+        SecurityContext contextHolder = SecurityContextHolder.getContext();
+        UserDetails u = (UserDetails) contextHolder.getAuthentication().getDetails();
+        UserDetails userDetails = userDetailsService.loadUserByUsername(u.getUsername());
+        String accessToken = tokenUtil.generateAccessToken(userDetails);
+        return ResultUtil.getAccessTokenSucceed(accessToken);
     }
 
     @Override

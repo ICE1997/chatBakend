@@ -60,4 +60,11 @@ public class ResultUtil {
         baseResponse.setData(friends);
         return baseResponse;
     }
+
+
+    public static BaseResponse<Object> getAccessTokenSucceed(Object obj) {
+        BaseResponse<Object> baseResponse = new BaseResponse<>("10501", "获取新accessToken成功!");
+        baseResponse.setData(obj);
+        return baseResponse;
+    }
 }

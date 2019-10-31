@@ -10,7 +10,7 @@ public interface AuthService {
 
     BaseResponse login(LoginReq loginReq);
 
-    BaseResponse getAccessToken(String refreshToken);
+    BaseResponse getAccessToken();
 
     UserAccount getUserByUserName(String username);
 }
