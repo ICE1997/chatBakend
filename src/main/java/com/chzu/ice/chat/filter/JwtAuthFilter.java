@@ -21,8 +21,9 @@ import java.io.IOException;
  * @author mason
  */
 @Component
-public class JavaTokenFilter extends OncePerRequestFilter {
-    private static final String HEADER_AUTHORIZATION = "Authorization";
+public class JasonTokenFilter extends OncePerRequestFilter {
+    private static final String ACCESS_TOKEN = "AccessToken";
+    private static final String REFRESH_TOKEN = "RefreshToken";
     @Qualifier("userDetailServiceImpl")
     @Autowired
     private UserDetailsService userDetailsService;
@@ -31,18 +32,26 @@ public class JavaTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String token = httpServletRequest.getHeader(HEADER_AUTHORIZATION);
-        if (null != token) {
-            String username = tokenUtil.getUsernameFromToken(token);
+        String accessToken = httpServletRequest.getHeader(ACCESS_TOKEN);
+        String refreshToken = httpServletRequest.getHeader(REFRESH_TOKEN);
+
+        //当为accessToken时
+        if (null != accessToken) {
+            String username = tokenUtil.getUsernameFromToken(accessToken);
             System.out.println("用户名是:" + username);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-                if (tokenUtil.validate(token, userDetails)) {
+                if (tokenUtil.validate(accessToken, userDetails)) {
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, null);
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
             }
+        }
+
+        //当为refreshToken时
+        if(null != refreshToken) {
+
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }

@@ -1,6 +1,6 @@
 package com.chzu.ice.chat.config;
 
-import com.chzu.ice.chat.filter.JavaTokenFilter;
+import com.chzu.ice.chat.filter.JwtAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -40,7 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/userAccount/**").permitAll()
                 .anyRequest().authenticated();
-        http.addFilterBefore(authenticationFilterBean(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(tokenAuthenticationFilterBean(), UsernamePasswordAuthenticationFilter.class);
+        http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint());
         http.headers().cacheControl().disable();
     }
 
@@ -50,13 +52,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JavaTokenFilter authenticationFilterBean() {
-        return new JavaTokenFilter();
+    public JwtAuthFilter tokenAuthenticationFilterBean() {
+        return new JwtAuthFilter();
     }
 
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    /**
+     * 未登录调用需要登录使用的接口
+     **/
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return (httpServletRequest, httpServletResponse, e) -> {
+            httpServletResponse.setContentType("application/json;charset=utf-8");
+            httpServletResponse.getWriter().write("{\"error\":\"请登录\"}");
+            httpServletResponse.setStatus(401);
+        };
     }
 }
