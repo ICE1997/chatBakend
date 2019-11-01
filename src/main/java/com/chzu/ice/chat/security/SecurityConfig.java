@@ -83,7 +83,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationEntryPoint authenticationEntryPoint() {
         return (httpServletRequest, httpServletResponse, e) -> {
             httpServletResponse.setContentType("application/json;charset=utf-8");
-            httpServletResponse.getWriter().write("{\"error\":\"请登录\"}");
+            httpServletResponse.getWriter().write("{\"code\":\"401\",\"msg\":\"未登录\"}");
             httpServletResponse.setStatus(401);
         };
     }

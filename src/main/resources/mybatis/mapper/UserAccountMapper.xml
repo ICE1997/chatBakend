@@ -1,0 +1,37 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chzu.ice.chat.mapper.UserAccountMapper">
+    <insert id="register">
+        insert into user_account (username,password) values (#{username},#{password})
+    </insert>
+
+    <insert id="addTopic">
+        insert into username_topic (username, topic) VALUES (#{username},#{topic})
+    </insert>
+
+    <resultMap id="userAccountResMap" type="com.chzu.ice.chat.pojo.bean.UserAccount">
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+    </resultMap>
+
+    <resultMap id="principalResMap" type="com.chzu.ice.chat.pojo.bean.Principal">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+    </resultMap>
+
+
+    <select id="getUserByUserName" resultMap="userAccountResMap">
+        select username from user_account where username = #{username}
+    </select>
+
+    <select id="loadUserByUserName" resultMap="principalResMap">
+        select username , password from user_account where username = #{username}
+    </select>
+
+    <select id="getTopicByUsername" resultType="java.lang.String">
+        select b.topic from user_account as a, username_topic as b where a.username = #{username} and a.username = b.username
+    </select>
+</mapper>

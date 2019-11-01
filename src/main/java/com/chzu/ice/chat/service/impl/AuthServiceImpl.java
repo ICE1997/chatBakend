@@ -1,6 +1,6 @@
 package com.chzu.ice.chat.service.impl;
 
-import com.chzu.ice.chat.dao.UserAccountDao;
+import com.chzu.ice.chat.mapper.UserAccountMapper;
 import com.chzu.ice.chat.pojo.bean.UserAccount;
 import com.chzu.ice.chat.pojo.gson.req.LoginReq;
 import com.chzu.ice.chat.pojo.gson.req.RegisterReq;
@@ -20,6 +20,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 /**
  * @author mason
@@ -28,7 +31,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthServiceImpl implements AuthService {
     @Autowired
-    private UserAccountDao userAccountDao;
+    private UserAccountMapper userAccountMapper;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -41,12 +44,17 @@ public class AuthServiceImpl implements AuthService {
     private JwtUtil tokenUtil;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public BaseResponse register(RegisterReq registerReq) {
+        String username = registerReq.getUsername();
+        String password = registerReq.getPassword();
         try {
-            if (getUserByUserName(registerReq.getUsername()) != null) {
+            if (getUserByUserName(username) != null) {
                 return ResultUtil.registerFailedForUserExist(null);
             } else {
-                userAccountDao.register(registerReq.getUsername(), new BCryptPasswordEncoder().encode(registerReq.getPassword()));
+                String topic = "usr" + UUID.randomUUID().toString().replaceAll("-", "");
+                userAccountMapper.addTopic(username, topic);
+                userAccountMapper.register(username, new BCryptPasswordEncoder().encode(password));
                 return ResultUtil.registerSucceed(null);
             }
         } catch (Exception e) {
@@ -64,9 +72,11 @@ public class AuthServiceImpl implements AuthService {
             UserDetails userDetails = userDetailsService.loadUserByUsername(loginReq.getUsername());
             String accessToken = tokenUtil.generateAccessToken(userDetails);
             String refreshToken = tokenUtil.generateRefreshToken(userDetails);
+            String topic = userAccountMapper.getTopicByUsername(loginReq.getUsername());
             LoginData loginData = new LoginData();
             loginData.refreshToken = refreshToken;
             loginData.accessToken = accessToken;
+            loginData.topic = topic;
             return ResultUtil.loginSucceed(loginData);
         } else {
             return ResultUtil.loginFailedForUserNotExist(null);
@@ -85,6 +95,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public UserAccount getUserByUserName(String username) {
-        return userAccountDao.getUserByUserName(username);
+        return userAccountMapper.getUserByUserName(username);
     }
 }

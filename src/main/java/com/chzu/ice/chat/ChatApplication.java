@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author mason
  */
 @SpringBootApplication
-@MapperScan("com.chzu.ice.chat.dao")
+@MapperScan("com.chzu.ice.chat.mapper")
 public class ChatApplication {
     public static void main(String[] args) {
         SpringApplication.run(ChatApplication.class, args);

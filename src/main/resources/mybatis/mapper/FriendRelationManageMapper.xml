@@ -1,0 +1,22 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chzu.ice.chat.mapper.FriendRelationManageMapper">
+    <insert id="addFriendRelation">
+        insert into friend_relation (user_name, friend_name)
+        values (#{userName}, #{friendName})
+    </insert>
+
+    <resultMap id="findFriendRelationByNameRP" type="com.chzu.ice.chat.pojo.bean.FriendRelation">
+        <result column="user_name" property="userName"/>
+        <result column="friend_name" property="friendName"/>
+    </resultMap>
+
+    <select id="findFriendRelationByName" resultMap="findFriendRelationByNameRP">
+        select *
+        from friend_relation
+        where user_name = #{username}
+          and friend_name = #{friendName}
+    </select>
+</mapper>
