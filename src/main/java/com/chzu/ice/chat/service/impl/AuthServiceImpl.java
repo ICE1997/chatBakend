@@ -77,11 +77,15 @@ public class AuthServiceImpl implements AuthService {
             loginData.refreshToken = refreshToken;
             loginData.accessToken = accessToken;
             loginData.topic = topic;
+            if (userAccountMapper.getPublicKeyByUsername(loginReq.getUsername()) == null) {
+                userAccountMapper.addPublicKeyWithUsername(loginReq.getUsername(), loginReq.getPublicKey());
+            } else {
+                userAccountMapper.updatePublicKeyWithUsername(loginReq.getUsername(), loginReq.getPublicKey());
+            }
             return ResultUtil.loginSucceed(loginData);
         } else {
             return ResultUtil.loginFailedForUserNotExist(null);
         }
-
     }
 
     @Override

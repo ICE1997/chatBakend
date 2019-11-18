@@ -25,11 +25,12 @@ public class JwtUtil implements Serializable {
     private JwtConfig jwtConfig;
 
     private String generateToken(UserDetails userDetails, String type, long exp) {
-        Map<String, Object> claims = new HashMap<>();
+        Map<String, Object> claims = new HashMap<>(5);
         claims.put(Claims.SUBJECT, userDetails.getUsername());
         claims.put(Claims.ISSUER, jwtConfig.getIssuer());
         claims.put(Claims.ISSUED_AT, new Date(Instant.now().toEpochMilli()));
-        claims.put(Claims.EXPIRATION, new Date(Instant.now().toEpochMilli() + exp));
+        System.out.println(new Date(Instant.now().toEpochMilli()));
+        claims.put(Claims.EXPIRATION, new Date(Instant.now().toEpochMilli() / 1000 + exp));
         claims.put("type", type);
         return Jwts.builder()
                 .setClaims(claims)
@@ -55,11 +56,11 @@ public class JwtUtil implements Serializable {
     }
 
     public Boolean validateAccessToken(String token, UserDetails userDetails) {
-        return validate(token,userDetails,jwtConfig.getTypeAccessToken());
+        return validate(token, userDetails, jwtConfig.getTypeAccessToken());
     }
 
-    public Boolean validateRefreshToken(String token,UserDetails userDetails) {
-        return validate(token,userDetails,jwtConfig.getTypeRefreshToken());
+    public Boolean validateRefreshToken(String token, UserDetails userDetails) {
+        return validate(token, userDetails, jwtConfig.getTypeRefreshToken());
     }
 
     private Boolean isTokenExpired(String token) {

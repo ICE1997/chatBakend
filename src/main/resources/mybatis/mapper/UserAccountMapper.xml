@@ -22,7 +22,6 @@
         <result column="password" property="password"/>
     </resultMap>
 
-
     <select id="getUserByUserName" resultMap="userAccountResMap">
         select username from user_account where username = #{username}
     </select>
@@ -34,4 +33,16 @@
     <select id="getTopicByUsername" resultType="java.lang.String">
         select b.topic from user_account as a, username_topic as b where a.username = #{username} and a.username = b.username
     </select>
+
+    <select id="getPublicKeyByUsername" resultType="java.lang.String">
+        select b.public_key from user_account as a, user_public_key as b where  a.username = #{username} and a.username = b.username;
+    </select>
+
+    <insert id="addPublicKeyWithUsername">
+        insert into user_public_key  (username,public_key) values (#{username},#{publicKey})
+    </insert>
+
+    <update id="updatePublicKeyWithUsername">
+        update user_public_key set public_key = #{publicKey} where username = #{username};
+    </update>
 </mapper>

@@ -6,7 +6,7 @@ import com.chzu.ice.chat.pojo.gson.resp.data.LoadAllFriendRelationsData;
 import java.util.List;
 
 public interface FriendRelationManageService {
-    void addFriendRelation(FriendRelation friendRelation);
+    void addFriendWithName(String username, String friendName);
 
     FriendRelation findFriendRelationByName(String username, String friendName);
 

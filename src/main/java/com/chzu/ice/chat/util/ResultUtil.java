@@ -55,12 +55,23 @@ public class ResultUtil {
         return baseResponse;
     }
 
+    public static BaseResponse<Object> addFriendFailedForAdded(Object obj) {
+        BaseResponse<Object> baseResponse = new BaseResponse<>("10303", "已经是好友!");
+        baseResponse.setData(obj);
+        return baseResponse;
+    }
+
+    public static BaseResponse<Object> addFriendFailedForCantAddSelf(Object obj) {
+        BaseResponse<Object> baseResponse = new BaseResponse<>("10304", "不能添加自己为好友!");
+        baseResponse.setData(obj);
+        return baseResponse;
+    }
+
     public static BaseResponse<List<LoadAllFriendRelationsData>> loadFriendsSucceed(List<LoadAllFriendRelationsData> friends) {
         BaseResponse<List<LoadAllFriendRelationsData>> baseResponse = new BaseResponse<>("10401", "获取朋友成功!");
         baseResponse.setData(friends);
         return baseResponse;
     }
-
 
     public static BaseResponse<Object> getAccessTokenSucceed(Object obj) {
         BaseResponse<Object> baseResponse = new BaseResponse<>("10501", "获取新accessToken成功!");

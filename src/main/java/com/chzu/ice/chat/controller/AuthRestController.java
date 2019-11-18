@@ -28,7 +28,6 @@ public class AuthRestController {
     public BaseResponse register(@RequestBody RegisterReq registerReq) {
         System.out.println("注册...");
         return authService.register(registerReq);
-
     }
 
     @PostMapping(value = "login")

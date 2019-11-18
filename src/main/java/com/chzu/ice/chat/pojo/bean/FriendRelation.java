@@ -7,8 +7,17 @@ public class FriendRelation {
     private String userName;
     private String friendName;
     private String friendTopic;
+    private String friendPublicKey;
 
     public FriendRelation() {
+    }
+
+    public String getFriendPublicKey() {
+        return friendPublicKey;
+    }
+
+    public void setFriendPublicKey(String friendPublicKey) {
+        this.friendPublicKey = friendPublicKey;
     }
 
     public String getUserName() {

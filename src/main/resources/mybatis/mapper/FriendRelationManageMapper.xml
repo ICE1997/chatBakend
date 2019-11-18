@@ -4,19 +4,19 @@
 
 <mapper namespace="com.chzu.ice.chat.mapper.FriendRelationManageMapper">
     <insert id="addFriendRelation">
-        insert into friend_relation (user_name, friend_name)
-        values (#{userName}, #{friendName})
+        insert into friend_relation (username, friend_name)
+        values (#{username}, #{friendName})
     </insert>
 
     <resultMap id="findFriendRelationByNameRP" type="com.chzu.ice.chat.pojo.bean.FriendRelation">
-        <result column="user_name" property="userName"/>
+        <result column="username" property="userName"/>
         <result column="friend_name" property="friendName"/>
     </resultMap>
 
     <select id="findFriendRelationByName" resultMap="findFriendRelationByNameRP">
         select *
         from friend_relation
-        where user_name = #{username}
+        where username = #{username}
           and friend_name = #{friendName}
     </select>
 </mapper>

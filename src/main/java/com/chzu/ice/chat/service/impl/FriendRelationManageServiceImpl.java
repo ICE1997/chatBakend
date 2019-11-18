@@ -18,8 +18,8 @@ public class FriendRelationManageServiceImpl implements FriendRelationManageServ
     private FriendRelationManageMapper friendRelationManageMapper;
 
     @Override
-    public void addFriendRelation(FriendRelation friendRelation) {
-        friendRelationManageMapper.addFriendRelation(friendRelation);
+    public void addFriendWithName(String username,String friendName) {
+        friendRelationManageMapper.addFriendRelation(username,friendName);
     }
 
     @Override
