@@ -29,5 +29,6 @@ build/
 
 ### VS Code ###
 .vscode/
-*.DS_Store
-src/main/resources/keystore.jks
+
+.DS_Store
+*/.DS_Store
