@@ -83,6 +83,7 @@ public class AuthServiceImpl implements AuthService {
                 userAccountMapper.updatePublicKeyWithUsername(loginReq.getUsername(), loginReq.getPublicKey());
             }
             return ResultUtil.loginSucceed(loginData);
+
         } else {
             return ResultUtil.loginFailedForUserNotExist(null);
         }
